@@ -201,31 +201,51 @@ namespace Calculator_2
             return res;
         }
 
-        //static decimal PosDegreeOfNumber()
-        //{
-        //    decimal result;
-        //    decimal num1, num2;
-        //    Console.WriteLine("Firstly write degree");
-        //    num1 = EnterNumber("");
-        //    num2 = EnterNumber("");
-        //    result = num2;
-        //    if (num1 == 0)
-        //    {
-        //        result = 1;
-        //    }
-        //    else if (num1 == 1)
-        //    {
-        //        result = num2;
-        //    }
-        //    else
-        //    {
-        //        for (int i = 1; i < num1; i++)
-        //        {
-        //            result *= num2;
-        //        }
-        //    }
-        //    return result;
-        //}
-    }
+        public static void PolishReader()
+        {
+            Calculation calculation = new Calculation();
+            string expressioon = "3+4*2/(1-5)+2";
+            char[] charsMass = expressioon.ToCharArray();
+            Stack<char> operationSigns = new Stack<char>();
+            List<char> polishMass = new List<char>();
+            Stack<char> polishStack = new Stack<char>();
+            Dictionary<char, int> prioritets = new Dictionary<char, int>()
+            {
+                { '(', 0},
+                { ')', 1},
+                { '+', 2},
+                {'-', 2},
+                {'*', 3},
+                {'/', 3},
+                {'^', 4},
+            };
+        }
+
+            //static decimal PosDegreeOfNumber()
+            //{
+            //    decimal result;
+            //    decimal num1, num2;
+            //    Console.WriteLine("Firstly write degree");
+            //    num1 = EnterNumber("");
+            //    num2 = EnterNumber("");
+            //    result = num2;
+            //    if (num1 == 0)
+            //    {
+            //        result = 1;
+            //    }
+            //    else if (num1 == 1)
+            //    {
+            //        result = num2;
+            //    }
+            //    else
+            //    {
+            //        for (int i = 1; i < num1; i++)
+            //        {
+            //            result *= num2;
+            //        }
+            //    }
+            //    return result;
+            //}
+        }
 }
 
