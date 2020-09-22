@@ -312,33 +312,7 @@ namespace Calculator_2
                 }
             }
             return nums[0];
-        }
-
-        //static decimal PosDegreeOfNumber()
-        //{
-        //    decimal result;
-        //    decimal num1, num2;
-        //    Console.WriteLine("Firstly write degree");
-        //    num1 = EnterNumber("");
-        //    num2 = EnterNumber("");
-        //    result = num2;
-        //    if (num1 == 0)
-        //    {
-        //        result = 1;
-        //    }
-        //    else if (num1 == 1)
-        //    {
-        //        result = num2;
-        //    }
-        //    else
-        //    {
-        //        for (int i = 1; i < num1; i++)
-        //        {
-        //            result *= num2;
-        //        }
-        //    }
-        //    return result;
-        //}
+        }        
     }
 }
 
