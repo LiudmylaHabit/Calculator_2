@@ -66,7 +66,7 @@ namespace Calculator_2
                         result = calculate.DivisionReminder(a, b);
                         break;
                     case 7:
-                        //result = PolishReader();
+                        result = PolishReader();
                         break;
                     case 8:
                         menu = false;
@@ -83,7 +83,7 @@ namespace Calculator_2
                 {
                     Console.WriteLine("\nThe result is " + result);
                 }
-                Console.WriteLine("...press any key\n");
+                Console.WriteLine("\n...press any key\n");
                 Console.ReadKey();
             } while (menu);
             Console.ReadKey();//$
@@ -201,51 +201,144 @@ namespace Calculator_2
             return res;
         }
 
-        public static void PolishReader()
+        public static decimal PolishReader()
         {
             Calculation calculation = new Calculation();
-            string expressioon = "3+4*2/(1-5)+2";
-            char[] charsMass = expressioon.ToCharArray();
-            Stack<char> operationSigns = new Stack<char>();
-            List<char> polishMass = new List<char>();
-            Stack<char> polishStack = new Stack<char>();
-            Dictionary<char, int> prioritets = new Dictionary<char, int>()
+            string expression = "3+4*2/(1-5)^2";
+            Console.WriteLine("\nMath expression: \n" + expression);
+            char[] charsMass = expression.ToCharArray();
+            List<string> stringMass = new List<string>();
+            // Creating array af strings to convinience use of expression
+            foreach (char item in charsMass)
             {
-                { '(', 0},
-                { ')', 1},
-                { '+', 2},
-                {'-', 2},
-                {'*', 3},
-                {'/', 3},
-                {'^', 4},
+                stringMass.Add(Char.ToString(item));
+            }
+            Stack<string> operationSigns = new Stack<string>();
+            List<string> polishMass = new List<string>();
+            List<decimal> nums = new List<decimal>();
+            Dictionary<string, int> prioritets = new Dictionary<string, int>()
+            {
+                { "(", 0},
+                { ")", 1},
+                { "+", 2},
+                {"-", 2},
+                {"*", 3},
+                {"/", 3},
+                {"^", 4},
             };
+            for (int i = 0; i < stringMass.Count; i++)
+            {
+                // if it is numeral add it to polish form
+                if (decimal.TryParse(stringMass[i].ToString(), out decimal num))
+                {
+                    polishMass.Add(num.ToString());
+                    nums.Add(num);
+                }
+                // if it is nit a numeral check priority and than add it to stack or to polish form
+                else
+                {
+                    if (prioritets.ContainsKey(stringMass[i]))
+                    {
+                        int prior = prioritets[stringMass[i]];
+                        if (operationSigns.Count == 0 || stringMass[i] == "(")
+                        {
+                            operationSigns.Push(stringMass[i]);
+                        }
+                        else
+                        {
+                            int priorInStack = prioritets[operationSigns.Peek()];
+                            if (prior == 1)
+                            {
+                                while (operationSigns.Peek() != "(")
+                                {
+                                    polishMass.Add(operationSigns.Pop());
+                                }
+                                operationSigns.Pop();
+                            }
+                            else if (prior <= priorInStack)
+                            {
+                                polishMass.Add(operationSigns.Pop());
+                                operationSigns.Push(stringMass[i]);
+                            }
+                            else if (prior > priorInStack)
+                            {
+                                operationSigns.Push(stringMass[i]);
+                            }
+                            else if (prior < priorInStack)
+                            {
+                                operationSigns.Push(stringMass[i]);
+                            }
+                        }
+                    }
+                }
+                // if expression end but stack still have some operands - add them to polish form
+                if (i == stringMass.Count - 1)
+                {
+                    while (operationSigns.Count > 0)
+                    {
+                        polishMass.Add(operationSigns.Pop());
+                    }
+                }
+            }
+            Console.WriteLine("\nPolish form of expression:");
+            foreach (var item in polishMass)
+            {
+                Console.Write(item + " ");
+            }
+            int iter = 1;
+            for (int i = 0; i < polishMass.Count; i++)
+            {
+                if (int.TryParse(polishMass[i], out int num))
+                {
+                    continue;
+                }
+                else
+                {
+                    decimal res = 0;
+                    if (polishMass[i] != "^")
+                    {
+                        res = GeneralOperations(polishMass[i], nums[i - iter], nums[i - iter - 1], calculation);
+                        nums.Remove(nums[i - iter]);
+                        nums[i - iter - 1] = res;
+                        iter += 2;
+                    }
+                    else if (polishMass[i] == "^")
+                    {
+                        res = calculation.PosDegreeOfNumber(nums[i - iter - 1], nums[i - iter]);
+                        nums.Remove(nums[i - iter]);
+                        nums[i - iter - 1] = res;
+                        iter += 2;
+                    }
+                }
+            }
+            return nums[0];
         }
 
-            //static decimal PosDegreeOfNumber()
-            //{
-            //    decimal result;
-            //    decimal num1, num2;
-            //    Console.WriteLine("Firstly write degree");
-            //    num1 = EnterNumber("");
-            //    num2 = EnterNumber("");
-            //    result = num2;
-            //    if (num1 == 0)
-            //    {
-            //        result = 1;
-            //    }
-            //    else if (num1 == 1)
-            //    {
-            //        result = num2;
-            //    }
-            //    else
-            //    {
-            //        for (int i = 1; i < num1; i++)
-            //        {
-            //            result *= num2;
-            //        }
-            //    }
-            //    return result;
-            //}
-        }
+        //static decimal PosDegreeOfNumber()
+        //{
+        //    decimal result;
+        //    decimal num1, num2;
+        //    Console.WriteLine("Firstly write degree");
+        //    num1 = EnterNumber("");
+        //    num2 = EnterNumber("");
+        //    result = num2;
+        //    if (num1 == 0)
+        //    {
+        //        result = 1;
+        //    }
+        //    else if (num1 == 1)
+        //    {
+        //        result = num2;
+        //    }
+        //    else
+        //    {
+        //        for (int i = 1; i < num1; i++)
+        //        {
+        //            result *= num2;
+        //        }
+        //    }
+        //    return result;
+        //}
+    }
 }
 
