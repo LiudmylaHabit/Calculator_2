@@ -77,7 +77,7 @@ namespace Calculator_2
             return res;
         }
 
-        public string EnterExpression()
+        string EnterExpression()
         {
 
             bool flag = false;
@@ -109,14 +109,12 @@ namespace Calculator_2
                         }
                         if (sign >= 2)
                         {
-                            if ((expression[i] != '(' && expression[i - 1] != ')' && sign == 2)
-                                || (sign == 3 && expression[i - 1] == '(' && expression[i] != '-')
-                                  || sign > 3)
+                            if ((expression[i] != '(' && expression[i - 1] != ')' && sign >= 2))
                             {
                                 mistake = true;
                             }
                         }
-                        if (mistake)
+                        if (mistake || (i == expression.Trim().Length - 1 && expression[i] != ')'))
                         {
                             flag = true;
                             break;
@@ -133,6 +131,30 @@ namespace Calculator_2
                 }
             } while (expression.Trim().Length < 1 || flag);
             return expression;
+        }
+
+        public string AskExpression()
+        {
+            string choice = "";
+            string result = "";
+            do
+            {
+                Console.WriteLine("Please, enter '1' to calculate '3+4*2/(1-5)^2' expression");
+                Console.WriteLine("Please, enter '2' to calculate custom expression");
+                choice = Console.ReadLine();
+            } while (choice != "1" && choice != "2");
+            switch (choice)
+            {
+                case "1":
+                    result = "3+4*2/(1-5)^2";
+                    break;
+                case "2":
+                    result = EnterExpression();
+                    break;
+                default:
+                    break;
+            }
+            return result;
         }
     }
 }
