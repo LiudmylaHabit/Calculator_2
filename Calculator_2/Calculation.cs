@@ -121,8 +121,6 @@ namespace Calculator_2
         public decimal PolishReader(string expression)
         {
             Menu menu = new Menu();
-            //Calculation calculation = new Calculation();
-            //string expression = "3+4*2/(1-5)^2";
             Console.WriteLine("\nMath expression: \n" + expression);
             char[] charsMass = expression.ToCharArray();
             List<string> stringMass = new List<string>();

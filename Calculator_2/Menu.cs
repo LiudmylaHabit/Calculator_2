@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Calculator_2
 {
@@ -35,9 +31,6 @@ namespace Calculator_2
                 switch (operation)
                 {
                     case 1:
-                        //firstOperand = EnterNumber(message);
-                        //secondOperand = EnterNumber(message);
-                        //sign = EnterSign();
                         result = GeneralOperations(ref excep, EnterSign(), EnterNumber(message), EnterNumber(message), calculate);
                         break;
                     case 2:
@@ -87,8 +80,9 @@ namespace Calculator_2
                 Console.WriteLine("\n...press any key\n");
                 Console.ReadKey();
                 Console.WriteLine();
-            } while (options);//$
+            } while (options);
         }
+
         public decimal EnterNumber(string message)
         {
             decimal number;
