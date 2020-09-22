@@ -25,9 +25,8 @@ namespace Calculator_2
                     Console.WriteLine("4. Positive degree of number");
                     Console.WriteLine("5. Sqrt of number");
                     Console.WriteLine("6. Reminder after division");
-                    Console.WriteLine("7. Polish dich");
-                    Console.WriteLine("8. Exit");
-                } while (!int.TryParse(Console.ReadLine(), out operation) || operation < 1 || operation > 8);
+                    Console.WriteLine("7. Exit");
+                } while (!int.TryParse(Console.ReadLine(), out operation) || operation < 1 || operation > 7);
                 switch (operation)
                 {
                     case 1:
@@ -60,15 +59,12 @@ namespace Calculator_2
                         result = calculate.SqrtOfNumber(a);
                         break;
                     case 6:
-                        message = "Please write divider ";
+                        message = "Please write divider\n";
                         a = EnterNumber("");
                         b = EnterNumber(message);
                         result = calculate.DivisionReminder(a, b);
-                        break;
+                        break;                   
                     case 7:
-                        result = PolishReader();
-                        break;
-                    case 8:
                         menu = false;
                         Environment.Exit(0);
                         break;
@@ -83,7 +79,7 @@ namespace Calculator_2
                 {
                     Console.WriteLine("\nThe result is " + result);
                 }
-                Console.WriteLine("\n...press any key\n");
+                Console.WriteLine("...press any key\n");
                 Console.ReadKey();
             } while (menu);
             Console.ReadKey();//$
@@ -312,7 +308,7 @@ namespace Calculator_2
                 }
             }
             return nums[0];
-        }        
+        }   
     }
 }
 
