@@ -292,10 +292,12 @@ namespace Calculator_2
                 Console.Write("Available operations '*' '+' '-' '/' '(' ')' '^' ");
                 expression = Console.ReadLine();
                 char[] validSigns = new char[] { '+', '-', '*', '/', '(', ')', '^' };
+                int sign = 0;
                 for (int i = 0; i < expression.Trim().Length; i++)
                 {
                     if (!decimal.TryParse(expression[i].ToString(), out decimal operand))
                     {
+                        sign++;                        
                         bool mistake = true;
                         if (i != 0)
                         {
@@ -308,11 +310,24 @@ namespace Calculator_2
                                 }
                             }
                         }
+                        if (sign >= 2)
+                        {
+                            if ((expression[i] != '(' && expression[i - 1] != ')' && sign == 2) 
+                                || (sign == 3 && expression[i-1] == '(' && expression[i] != '-')
+                                  || sign > 3)
+                            {
+                                mistake = true;
+                            }
+                        }
                         if (mistake)
                         {
                             flag = true;
                             break;
                         }
+                    }
+                    else
+                    {
+                        sign = 0;
                     }
                 }
                 if (flag)
