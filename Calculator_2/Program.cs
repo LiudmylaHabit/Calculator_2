@@ -13,26 +13,30 @@ namespace Calculator_2
             bool menu = true;
             decimal result = 0;
             decimal a, b;
+            string sign;
             string message = "";
             do
             {
                 bool excep = false;
                 do
                 {
-                    Console.WriteLine("Operations: \n1. General operations (+, -, *, /).)");
+                    Console.WriteLine("Operations:");
+                    Console.WriteLine("1. General operations (+, -, *, /).)");
                     Console.WriteLine("2. Percentage of the number ");
                     Console.WriteLine("3.'1/x'");
                     Console.WriteLine("4. Positive degree of number");
                     Console.WriteLine("5. Sqrt of number");
                     Console.WriteLine("6. Reminder after division");
-                    Console.WriteLine("7. Exit");
-                } while (!int.TryParse(Console.ReadLine(), out operation) || operation < 1 || operation > 7);
+                    Console.WriteLine("7. Polish reader");
+                    Console.WriteLine("8. Exit");
+                } while (!int.TryParse(Console.ReadLine(), out operation) || operation < 1 || operation > 8);
                 switch (operation)
                 {
                     case 1:
                         a = EnterNumber(message);
                         b = EnterNumber(message);
-                        result = GeneralOperations(ref excep, a, b, calculate);
+                        sign = EnterSign();
+                        result = GeneralOperations(ref excep, sign, a, b, calculate);
                         break;
                     case 2:
                         message = "What percentage? ";
@@ -63,8 +67,11 @@ namespace Calculator_2
                         a = EnterNumber("");
                         b = EnterNumber(message);
                         result = calculate.DivisionReminder(a, b);
-                        break;                   
+                        break;
                     case 7:
+                        result = PolishReader();
+                        break;
+                    case 8:
                         menu = false;
                         Environment.Exit(0);
                         break;
@@ -77,12 +84,12 @@ namespace Calculator_2
                 }
                 else
                 {
-                    Console.WriteLine("\nThe result is " + result);
+                    Console.WriteLine("\n\nThe result is " + result);
                 }
-                Console.WriteLine("...press any key\n");
+                Console.WriteLine("\n...press any key\n");
                 Console.ReadKey();
-            } while (menu);
-            Console.ReadKey();//$
+                Console.WriteLine();
+            } while (menu);//$
         }        
 
         public static decimal EnterNumber(string message)
@@ -112,52 +119,9 @@ namespace Calculator_2
                 sign = Console.ReadLine();
             } while (!(sign == "/" || sign == "+" || sign == "*" || sign == "-"));
             return sign;
-        }
+        }            
 
-        public static decimal GeneralOperations(ref bool excep, decimal num1, decimal num2, Calculation calc)
-        {
-            decimal res = 0;
-            string operation;
-            operation = EnterSign();
-            switch (operation)
-            {
-                case "/":
-                    res = calc.Divide(num1, num2);
-                    try
-                    {
-                        if (num2 == 0)
-                        {
-                            excep = true;
-                            throw new DivideByZeroException();
-                        }
-                        else
-                        {
-                            res = calc.Divide(num1, num2);
-                        }
-                    }
-                    catch (DivideByZeroException ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
-                    break;
-                case "*":
-                    res = calc.Multiply(num1, num2);
-                    break;
-                case "-":
-                    res = calc.Substract(num1, num2);
-                    break;
-                case "+":
-                    res = calc.Add(num1, num2);
-                    break;
-                default:
-                    Console.WriteLine("You put wrong sign!");
-                    res = 0;
-                    break;
-            }
-            return res;
-        }
-
-        public static decimal GeneralOperations(string operation, decimal num2, decimal num1,  Calculation calc)
+        public static decimal GeneralOperations(ref bool excep, string operation, decimal num2, decimal num1,  Calculation calc)
         {
             decimal res = 0;
             switch (operation)
@@ -230,7 +194,7 @@ namespace Calculator_2
                     polishMass.Add(num.ToString());
                     nums.Add(num);
                 }
-                // if it is nit a numeral check priority and than add it to stack or to polish form
+                // if it is not a numeral check priority and than add it to stack or to polish form
                 else
                 {
                     if (prioritets.ContainsKey(stringMass[i]))
@@ -282,6 +246,7 @@ namespace Calculator_2
                 Console.Write(item + " ");
             }
             int iter = 1;
+            bool flag = false;
             for (int i = 0; i < polishMass.Count; i++)
             {
                 if (int.TryParse(polishMass[i], out int num))
@@ -293,7 +258,7 @@ namespace Calculator_2
                     decimal res = 0;
                     if (polishMass[i] != "^")
                     {
-                        res = GeneralOperations(polishMass[i], nums[i - iter], nums[i - iter - 1], calculation);
+                        res = GeneralOperations(ref flag, polishMass[i], nums[i - iter], nums[i - iter - 1], calculation);
                         nums.Remove(nums[i - iter]);
                         nums[i - iter - 1] = res;
                         iter += 2;
@@ -306,6 +271,10 @@ namespace Calculator_2
                         iter += 2;
                     }
                 }
+            }
+            if (flag)
+            {
+                Console.WriteLine("Your expression has mistake!");
             }
             return nums[0];
         }   
