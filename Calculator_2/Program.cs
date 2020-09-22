@@ -12,7 +12,7 @@ namespace Calculator_2
             int operation;
             bool menu = true;
             decimal result = 0;
-            decimal a, b;
+            decimal firstOperand, secondOperand;
             string sign;
             string message = "";
             do
@@ -33,40 +33,40 @@ namespace Calculator_2
                 switch (operation)
                 {
                     case 1:
-                        a = EnterNumber(message);
-                        b = EnterNumber(message);
+                        firstOperand = EnterNumber(message);
+                        secondOperand = EnterNumber(message);
                         sign = EnterSign();
-                        result = GeneralOperations(ref excep, sign, a, b, calculate);
+                        result = GeneralOperations(ref excep, sign, firstOperand, secondOperand, calculate);
                         break;
                     case 2:
                         message = "What percentage? ";
-                        a = EnterNumber(message);
+                        firstOperand = EnterNumber(message);
                         message = "of what? ";
-                        b = EnterNumber(message);
-                        result = calculate.Percent(a, b); ;
+                        secondOperand = EnterNumber(message);
+                        result = calculate.Percent(firstOperand, secondOperand); ;
                         break;
                     case 3:
                         message = "Please write divider\n";
-                        a = EnterNumber(message);
-                        result = calculate.OneDivision(a);
-                        if (a == 0) excep = true;
+                        firstOperand = EnterNumber(message);
+                        result = calculate.OneDivision(firstOperand);
+                        if (firstOperand == 0) excep = true;
                         break;
                     case 4:
                         message = "Please write degree\n";
-                        a = EnterNumber("");
-                        b = EnterNumber(message);
-                        result = calculate.PosDegreeOfNumber(a, b);
+                        firstOperand = EnterNumber("");
+                        secondOperand = EnterNumber(message);
+                        result = calculate.PosDegreeOfNumber(firstOperand, secondOperand);
                         break;
                     case 5:
-                        a = EnterNumber(message);
-                        if (a < 0) excep = true;
-                        result = calculate.SqrtOfNumber(a);
+                        firstOperand = EnterNumber(message);
+                        if (firstOperand < 0) excep = true;
+                        result = calculate.SqrtOfNumber(firstOperand);
                         break;
                     case 6:
                         message = "Please write divider\n";
-                        a = EnterNumber("");
-                        b = EnterNumber(message);
-                        result = calculate.DivisionReminder(a, b);
+                        firstOperand = EnterNumber("");
+                        secondOperand = EnterNumber(message);
+                        result = calculate.DivisionReminder(firstOperand, secondOperand);
                         break;
                     case 7:
                         result = PolishReader();
@@ -194,7 +194,7 @@ namespace Calculator_2
                     polishMass.Add(num.ToString());
                     nums.Add(num);
                 }
-                // if it is not a numeral check priority and than add it to stack or to polish form
+                // if it is not firstOperand numeral check priority and than add it to stack or to polish form
                 else
                 {
                     if (prioritets.ContainsKey(stringMass[i]))
