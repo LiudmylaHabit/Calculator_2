@@ -8,6 +8,7 @@ namespace Calculator_2
     {
         public static void Main(string[] args)
         {
+            EnterExpression();
             Calculation calculate = new Calculation();
             int operation;
             bool menu = true;
@@ -277,7 +278,50 @@ namespace Calculator_2
                 Console.WriteLine("Your expression has mistake!");
             }
             return nums[0];
-        }   
+        }
+
+        public static string EnterExpression()
+        {
+
+            bool flag = false;
+            string expression;
+            do
+            {
+                flag = false;
+                Console.Write("Please, write an expression without any spaces: ");
+                Console.Write("Available operations '*' '+' '-' '/' '(' ')' '^' ");
+                expression = Console.ReadLine();
+                char[] validSigns = new char[] { '+', '-', '*', '/', '(', ')', '^' };
+                for (int i = 0; i < expression.Trim().Length; i++)
+                {
+                    if (!decimal.TryParse(expression[i].ToString(), out decimal operand))
+                    {
+                        bool mistake = true;
+                        if (i != 0)
+                        {
+                            foreach (char item in validSigns)
+                            {
+                                if (item == expression[i])
+                                {
+                                    mistake = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if (mistake)
+                        {
+                            flag = true;
+                            break;
+                        }
+                    }
+                }
+                if (flag)
+                {
+                    Console.WriteLine("You did a mistake in input! Please, try again!");
+                }
+            } while (expression.Trim().Length < 1 || flag);
+            return expression;
+        }
     }
 }
 
