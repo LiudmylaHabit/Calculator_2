@@ -1,13 +1,88 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Calculator_2
 {
     public class Menu
     {
+        public void CalculatorMenu()
+        {
+            Calculation calculate = new Calculation();
+            int operation;
+            bool options = true;
+            decimal result = 0;
+            decimal firstOperand, secondOperand;
+            string sign;
+            string message = "";
+            do
+            {
+                bool excep = false;
+                do
+                {
+                    Console.WriteLine("Operations:");
+                    Console.WriteLine("1. General operations (+, -, *, /).)");
+                    Console.WriteLine("2. Percentage of the number ");
+                    Console.WriteLine("3.'1/x'");
+                    Console.WriteLine("4. Positive degree of number");
+                    Console.WriteLine("5. Sqrt of number");
+                    Console.WriteLine("6. Reminder after division");
+                    Console.WriteLine("7. Polish reader");
+                    Console.WriteLine("8. Exit");
+                } while (!int.TryParse(Console.ReadLine(), out operation) || operation < 1 || operation > 8);
+                switch (operation)
+                {
+                    case 1:
+                        result = GeneralOperations(ref excep, EnterSign(), EnterNumber(message), EnterNumber(message), calculate);
+                        break;
+                    case 2:
+                        firstOperand = EnterNumber("What percentage? ");
+                        secondOperand = EnterNumber("of what? ");
+                        result = calculate.Percent(firstOperand, secondOperand); ;
+                        break;
+                    case 3:
+                        firstOperand = EnterNumber("Please write divider\n");
+                        result = calculate.OneDivision(firstOperand);
+                        if (firstOperand == 0) excep = true;
+                        break;
+                    case 4:
+                        firstOperand = EnterNumber("");
+                        secondOperand = EnterNumber("Please write degree\n");
+                        result = calculate.PosDegreeOfNumber(firstOperand, secondOperand);
+                        break;
+                    case 5:
+                        firstOperand = EnterNumber(message);
+                        if (firstOperand < 0) excep = true;
+                        result = calculate.SqrtOfNumber(firstOperand);
+                        break;
+                    case 6:
+                        firstOperand = EnterNumber("");
+                        secondOperand = EnterNumber("Please write divider\n");
+                        result = calculate.DivisionReminder(firstOperand, secondOperand);
+                        break;
+                    case 7:
+                        string expr = AskExpression();
+                        result = calculate.PolishReader(expr);
+                        break;
+                    case 8:
+                        options = false;
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        break;
+                }
+                if (excep)
+                {
+                    Console.WriteLine("\nTry again!");
+                }
+                else
+                {
+                    Console.WriteLine("\n\nThe result is " + result);
+                }
+                Console.WriteLine("\n...press any key\n");
+                Console.ReadKey();
+                Console.WriteLine();
+            } while (options);
+        }
+
         public decimal EnterNumber(string message)
         {
             decimal number;
