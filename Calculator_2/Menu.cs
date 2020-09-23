@@ -11,7 +11,6 @@ namespace Calculator_2
             bool options = true;
             decimal result = 0;
             decimal firstOperand, secondOperand;
-            string sign;
             string message = "";
             do
             {

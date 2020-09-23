@@ -65,11 +65,24 @@ namespace UnitTestProject1
             Assert.AreEqual(expectedResult, result);
         }
 
-        [Test (Description = "Check correctness of Polish Reader method ")]
-        public void PolishReaderExampleChecking()
+        [TestCase(2, 0, 1)]
+        [TestCase(15, 1, 15)]
+        [TestCase(4, 3, 64)]
+        [TestCase(1, 19, 1)]
+        public void PosDegreeOfNumberChecking(decimal firstOperand, decimal secondOperand, decimal expectedResult)
         {
-            decimal result = _calc.PolishReader("3+4*2/(1-5)^2");
-            Assert.AreEqual(3.5, result);
+            decimal result = _calc.PosDegreeOfNumber(firstOperand, secondOperand);
+            Assert.AreEqual(expectedResult, result);
+        }
+
+        [TestCase(5, 100, 5)]
+        [TestCase(20, 15, 3)]
+        [TestCase(0.1, 1000, 1)]
+        [TestCase(33, 100, 33)]
+        public void PercentChecking(decimal firstOperand, decimal secondOperand, decimal expectedResult)
+        {
+            decimal result = _calc.Percent(firstOperand, secondOperand);
+            Assert.AreEqual(expectedResult, result);
         }
 
         [TestCase("2+6", 8, Description = "Check correctness of Polish Reader method")]
@@ -78,10 +91,7 @@ namespace UnitTestProject1
         [TestCase("6/2", 3)]
         [TestCase("1+(3-4)", 0)]
         [TestCase("2*(2+5)-3^2", 5)]
-        [TestCase("(2+5-3+10)*1", 7)]
         [TestCase("3+4*2/(1-5)^2", 3.5)]
-        [TestCase("++1", 0)]
-        [TestCase("3++", 0)]
         public void PolishReaderCustomChecking(string expression, decimal expectedResult)
         {
             decimal result = _calc.PolishReader(expression);
